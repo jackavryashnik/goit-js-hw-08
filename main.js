@@ -83,6 +83,8 @@ function showModal(event) {
 
 function hideModal(event) {
   if (event.key === 'Escape') {
-    body.children[4].remove();
+    for (const child of body.children) {
+      if (child.nodeName === 'DIV') child.remove();
+    }
   }
 }
