@@ -84,7 +84,7 @@ function showModal(event) {
 function hideModal(event) {
   if (event.key === 'Escape') {
     for (const child of body.children) {
-      if (child.nodeName === 'DIV') child.remove();
+      if (child.classList.toString() === 'basicLightbox basicLightbox--img basicLightbox--visible') child.remove();
     }
   }
 }
