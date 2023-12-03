@@ -46,6 +46,7 @@ const images = [
   },
 ];
 
+let modalElement;
 const gallery = document.querySelector('.gallery');
 const body = document.querySelector('body');
 const markup = images
@@ -59,9 +60,6 @@ const markup = images
   )
   .join('');
 
-gallery.insertAdjacentHTML('beforeend', markup);
-gallery.addEventListener('click', showModal);
-
 function showModal(event) {
   event.preventDefault();
   const { dataset, alt } = event.target;
@@ -70,21 +68,24 @@ function showModal(event) {
     return;
   }
 
-  basicLightbox
-    .create(
-      `
-		<img width="1112" height="640" src=${dataset.source} alt=${alt}/>
+  const modal = basicLightbox.create(
+    `
+		<img id="modal" width="1112" height="640" src=${dataset.source} alt=${alt}/>
 	    `,
-    )
-    .show();
+  );
 
+  modal.show();
+  modalElement = modal.element();
   document.addEventListener('keydown', hideModal);
 }
 
+gallery.insertAdjacentHTML('beforeend', markup);
+gallery.addEventListener('click', showModal);
+
 function hideModal(event) {
   if (event.key === 'Escape') {
-    for (const child of body.children) {
-      if (child.classList.toString() === 'basicLightbox basicLightbox--img basicLightbox--visible') child.remove();
-    }
+    modalElement.remove();
   }
+
+  document.removeEventListener('keydown', hideModal);
 }
